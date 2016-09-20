@@ -37,17 +37,8 @@ public class Birds {
         for (int i = 6; i < l-6; i++) {
             allClear = true;
 
-            for (int j = 0; j < birds.length; j++) {
-                if(i <= birds[j] && i+d > birds[j]){
-                    allClear = false;
-                    //System.out.println("No bird added. Bird already at " + bird);
-
-                    i= birds[j] + d - 1;
-                    //System.out.println("jumped to " + (i+1));
-                    break;
-                }
-            }
-            /*
+           
+           //tried a regular for loop and got the same results 
             for (int bird : birds){
                 if(i <= bird && i+d > bird){
                     allClear = false;
@@ -57,7 +48,7 @@ public class Birds {
                     //System.out.println("jumped to " + (i+1));
                     break;
                 }
-            }*/
+            }
 
             if (allClear){
                 additionalBirds++;
