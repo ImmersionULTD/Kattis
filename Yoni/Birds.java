@@ -40,7 +40,7 @@ public class Birds {
         boolean allClear;
         for (int i = 6; i < l-6; i++) {
             allClear = true;
-            
+
            
            //tried a regular for loop and got the same results 
 
