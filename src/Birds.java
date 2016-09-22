@@ -1,5 +1,6 @@
 
 
+import java.util.LinkedList;
 import java.util.Scanner;
 
 /**
@@ -16,11 +17,14 @@ public class Birds {
 
         int birds[] = new int[n];
 
+
         int additionalBirds = 0;
 
         for (int i = 0; i < n; i++){
             birds[i] = sc.nextInt();
+
         }
+
 
         //quick solution if there are no birds on the wire
         if(n == 0){
@@ -37,17 +41,7 @@ public class Birds {
         for (int i = 6; i < l-6; i++) {
             allClear = true;
 
-            for (int j = 0; j < birds.length; j++) {
-                if(i <= birds[j] && i+d > birds[j]){
-                    allClear = false;
-                    //System.out.println("No bird added. Bird already at " + bird);
 
-                    i= birds[j] + d - 1;
-                    //System.out.println("jumped to " + (i+1));
-                    break;
-                }
-            }
-            /*
             for (int bird : birds){
                 if(i <= bird && i+d > bird){
                     allClear = false;
@@ -57,7 +51,7 @@ public class Birds {
                     //System.out.println("jumped to " + (i+1));
                     break;
                 }
-            }*/
+            }
 
             if (allClear){
                 additionalBirds++;
