@@ -5,6 +5,7 @@ import java.util.Scanner;
 
 /**
  * Created by ykjt on 9/21/16.
+ * Code gets to 2/32 and fails with Wrong Answer
  */
 public class Rivers {
     public static void main(String[] args){
