@@ -1,0 +1,214 @@
+
+
+import java.util.*;
+
+import java.io.BufferedReader;
+import java.io.BufferedOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+
+
+
+public class Main {
+
+    static Scanner sc = new Scanner(System.in);
+    static int counter = 0;
+
+    public static void main(String[] args) {
+
+
+
+        int cases = sc.nextInt();
+        sc.nextLine();
+
+        Node root = new Node();
+
+
+        for (int i = 0; i < cases; i++) {
+            //String input = sc.nextLine();
+            StringBuilder input = new StringBuilder(sc.nextLine());
+
+            System.out.println("input = " + input.substring(0));
+
+            root = parseString(input);
+
+            calculateChanges(root);
+
+
+
+            //System.out.println(root.rc.lc.val);
+
+        }
+
+    }
+
+    private static void calculateChanges(Node node){
+        //int changes = 0;
+        if(node.isLeaf){
+            node.costs.put(node.val, 0);
+            node.costs.put(0, 1);
+            return;
+        }
+
+        calculateChanges(node.lc);
+        calculateChanges(node.rc);
+
+
+        //left
+        for (Map.Entry<Integer,Integer> entry: node.lc.costs.entrySet()){
+            if(node.rc.costs.get(entry.getKey()) == null)
+                node.costs.put(2*entry.getKey(), entry.getValue() + node.rc.costs.get(0));
+            else
+                node.costs.put(2*entry.getKey(), entry.getValue() + node.rc.costs.get(entry.getKey()));
+        }
+
+        //right
+        for (Map.Entry<Integer,Integer> entry: node.rc.costs.entrySet()){
+            if(node.lc.costs.get(entry.getKey()) == null)
+                node.costs.put(2*entry.getKey(), entry.getValue() + node.rc.costs.get(0));
+        }
+
+
+
+    }
+
+    private static Node parseString(StringBuilder input) {
+        Node currentNode = new Node();
+
+        while (input.length() > 0) {
+
+
+            if(input.charAt(0) == '['){
+                input.deleteCharAt(0);
+
+                Node newNode = new Node();
+                newNode.parent = currentNode;
+                currentNode.lc = newNode;
+
+                currentNode = newNode;
+
+                continue;
+            }
+
+            if(Character.isDigit(input.charAt(0))) {
+                //possibly use next digits
+                String number = input.charAt(0) + "";
+                input.deleteCharAt(0);
+
+                while (input.length() > 0){
+                    if (Character.isDigit(input.charAt(0))) {
+                        number += input.charAt(0);
+                        //System.out.println(input.charAt(0));
+                        input.deleteCharAt(0);
+                    } else {
+                        break;
+                    }
+                }
+
+                currentNode.val = Integer.parseInt(number);
+                currentNode.isLeaf = true;
+
+                continue;
+            }
+
+            if(input.charAt(0) == ','){
+                input.deleteCharAt(0);
+                currentNode = currentNode.parent;
+
+                Node newNode = new Node();
+                currentNode.rc = newNode;
+                newNode.parent = currentNode;
+
+                currentNode = newNode;
+
+                continue;
+
+            }
+
+            if(input.charAt(0) == ']'){
+                input.deleteCharAt(0);
+                currentNode = currentNode.parent;
+            }
+        }
+        return currentNode;
+    }
+}
+
+
+
+
+
+class Node{
+
+    Node parent;
+    Node lc;
+    Node rc;
+
+    int val;
+    boolean isLeaf = false;
+
+    HashMap<Integer, Integer> costs;
+
+}
+
+
+
+
+class Kattio extends PrintWriter {
+    public Kattio(InputStream i) {
+        super(new BufferedOutputStream(System.out));
+        r = new BufferedReader(new InputStreamReader(i));
+    }
+    Kattio() {
+        super(new BufferedOutputStream(System.out));
+        r = new BufferedReader(new InputStreamReader(System.in));
+    }
+
+    public boolean hasMoreTokens() {
+        return peekToken() != null;
+    }
+
+    public int getInt() {
+        return Integer.parseInt(nextToken());
+    }
+
+    public double getDouble() {
+        return Double.parseDouble(nextToken());
+    }
+
+    public long getLong() {
+        return Long.parseLong(nextToken());
+    }
+
+    public String getWord() {
+        return nextToken();
+    }
+
+
+
+    private BufferedReader r;
+    private StringTokenizer st;
+    private String token;
+
+    private String peekToken() {
+        if (token == null)
+            try {
+                while (st == null || !st.hasMoreTokens()) {
+                    String line = r.readLine();
+                    if (line == null) return null;
+                    st = new StringTokenizer(line);
+                }
+                token = st.nextToken();
+            } catch (IOException ignored) { }
+        return token;
+    }
+
+    private String nextToken() {
+        String ans = peekToken();
+        token = null;
+        return ans;
+    }
+}
+
